@@ -2,6 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
+.background-primary {
+  background: linear-gradient(to right, #0f0f0f, #ff0000, #0f0f0f);
+}
+
+.border-custom-primary {
+  border-bottom-width: 1.5px;
+  border-image: linear-gradient(to right, #0f0f0f, #ff0000, #0f0f0f) 1;
+}
+
+.border-right-primary {
+  border-right-width: 1.5px;
+  border-image: linear-gradient(to top, #0f0f0f, #ff0000, #0f0f0f) 1;
+}
+
+@layer base {
+  body {
+    background: #0f0f0f;
+    color: #fff;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* scroll-padding-top: 130px; */
+  }
+
+  h1 {
+    @apply text-2xl font-black uppercase;
+  }
+
+  h2 {
+    @apply mb-3 text-xl font-bold;
+  }
+
+  .components {
+    @apply max-w-[1280px] mx-auto;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    @apply w-1;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    @apply shadow-sm shadow-gray-50/30 rounded-lg bg-transparent;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    @apply rounded-lg bg-[#ff0000];
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-[#b30000];
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -56,14 +110,5 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
