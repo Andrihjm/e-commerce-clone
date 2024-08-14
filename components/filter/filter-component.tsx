@@ -1,6 +1,7 @@
 import FilterCheckbox from "./filter-checkbox";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
+import { RangeSlider } from "../shared/range-slider";
 
 const FilterComponent = () => {
   return (
@@ -18,7 +19,7 @@ const FilterComponent = () => {
         <div>
           <h2 className="text-lg">Prices From and To</h2>
 
-          <div className="flex gap-3 text-primary">
+          <div className="flex gap-3 text-primary mb-8">
             <Input
               type="number"
               placeholder="0"
@@ -29,7 +30,7 @@ const FilterComponent = () => {
             <Input type="number" placeholder="1000" min={100} max={1000} />
           </div>
 
-          {/* <RangeSlider min={0} max={5000} step={10} value={[0, 5000]} /> */}
+          <RangeSlider min={0} max={5000} step={10} value={[0, 5000]} />
         </div>
 
         <Separator />
