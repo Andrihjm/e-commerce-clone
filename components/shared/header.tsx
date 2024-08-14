@@ -19,7 +19,7 @@ const Header = () => {
 
             <div className="">
               <h1 className="text-2xl font-black uppercase">Next Pizza</h1>
-              <p className="leading-3 text-sm text-gray-50">Beli yay woyyyy</p>
+              <p className="text-sm text-gray-400 leading-3">Beli yay woyyyy</p>
             </div>
           </div>
 
@@ -40,7 +40,7 @@ const Header = () => {
                 </div>
 
                 <ArrowRight
-                  size={16}
+                  size={20}
                   className="absolute right-5 transition-all duration-500 -translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
                 />
               </Button>
