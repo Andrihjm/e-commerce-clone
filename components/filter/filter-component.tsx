@@ -1,7 +1,11 @@
+"use client";
+
 import FilterCheckbox from "./filter-checkbox";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { RangeSlider } from "../shared/range-slider";
+import FilterCheckboxGroup from "./filter-checkbox-group";
+import { defaultItems, items } from "@/data/data-array/menu-filter";
 
 const FilterComponent = () => {
   return (
@@ -10,8 +14,8 @@ const FilterComponent = () => {
 
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
-          <FilterCheckbox text="Ini pedas su" value="1" />
-          <FilterCheckbox text="ini nggak pedas" value="2" />
+          <FilterCheckbox label="Ini pedas su" value="1" />
+          <FilterCheckbox label="ini nggak pedas" value="2" />
         </div>
 
         <Separator />
@@ -36,17 +40,13 @@ const FilterComponent = () => {
         <Separator />
 
         <div className="flex flex-col gap-2">
-          <input type="text" />
-
           <div className="flex flex-col gap-4">
-            <FilterCheckbox text="Ini pedas su" value="1" />
-            <FilterCheckbox text="ini nggak pedas" value="2" />
-            <FilterCheckbox text="Ini pedas su" value="1" />
-            <FilterCheckbox text="ini nggak pedas" value="2" />
-            <FilterCheckbox text="Ini pedas su" value="1" />
-            <FilterCheckbox text="ini nggak pedas" value="2" />
-            <FilterCheckbox text="Ini pedas su" value="1" />
-            <FilterCheckbox text="ini nggak pedas" value="2" />
+            <FilterCheckboxGroup
+              title="Pizza"
+              limit={6}
+              defaultItems={[...defaultItems, ...items]}
+              items={[...defaultItems, ...items]}
+            />
           </div>
         </div>
       </div>

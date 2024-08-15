@@ -5,7 +5,7 @@ import SortPopUp from "./sort-pop-up";
 const Category = () => {
   return (
     <>
-      <div className="sticky top-0 flex items-center justify-between py-4 border-custom-primary">
+      <div className="sticky top-0 flex items-center justify-between py-4 bg-dark border-custom-primary">
         <div className="inline-flex items-center gap-1 p-1 ">
           {categoryMenu.map((category) => (
             <a

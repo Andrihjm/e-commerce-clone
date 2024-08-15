@@ -1,42 +1,38 @@
-import React from "react";
 import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
 
 interface FilterCheckboxProps {
-  text: string;
+  label: string;
   value: string;
-  endAdornment?: React.ReactNode;
+  endAdorment?: React.ReactNode;
   onCheckedChange?: (checked: boolean) => void;
   checked?: boolean;
-  name?: string;
 }
 
 const FilterCheckbox = ({
-  text,
+  label,
   value,
-  endAdornment,
+  endAdorment,
   onCheckedChange,
   checked,
-  name,
 }: FilterCheckboxProps) => {
   return (
-    <>
-      <div className="flex items-center space-x-2">
-        <Checkbox
-          id={`checkbox-${String(name)}-${String(value)}`}
-          value={value}
-          checked={checked}
-          onCheckedChange={onCheckedChange}
-          className="rounded-[8px] w-6 h-6"
-        />
-        <label
-          htmlFor={`checkbox-${String(name)}-${String(value)}`}
-          className="leading-none cursor-pointer flex-1"
-        >
-          {text}
-        </label>
-        {endAdornment}
-      </div>{" "}
-    </>
+    <div className="flex items-center space-x-2 cursor-pointer">
+      <Checkbox
+        id={`checkbox-${String(value)}`}
+        value={value}
+        checked={checked}
+        onCheckedChange={onCheckedChange}
+        className="h-6 w-6 rounded-[8px]"
+      />
+      <Label
+        htmlFor={`checkbox-${String(value)}`}
+        className="flex-1 leading-none cursor-pointer"
+      >
+        {label}
+      </Label>
+      {endAdorment}
+    </div>
   );
 };
 

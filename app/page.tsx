@@ -1,5 +1,6 @@
 import FilterComponent from "@/components/filter/filter-component";
 import Category from "@/components/shared/category";
+import { defaultItems, items } from "@/data/data-array/menu-filter";
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
 
         <div className="components pt-6">
           <div className="flex gap-10">
-            <div className="w-[250px] border-right-primary">
+            <div className="w-[250px] pr-2 border-right-primary">
               <FilterComponent />
             </div>
 
