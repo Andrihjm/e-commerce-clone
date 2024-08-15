@@ -1,9 +1,6 @@
 import FilterComponent from "@/components/filter/filter-component";
-import ProductCard from "@/components/products/product-card";
-import Product from "@/components/products/product-card";
 import ProductsGroupList from "@/components/products/products-group-list";
 import Category from "@/components/shared/category";
-import { defaultItems, items } from "@/data/data-array/menu-filter";
 import {
   product1,
   product2,
@@ -34,12 +31,12 @@ export default function Home() {
                 <ProductsGroupList
                   title="Teh asu"
                   items={[...product2]}
-                  categoryId={1}
+                  categoryId={2}
                 />
                 <ProductsGroupList
                   title="Nes cape"
                   items={[...product3]}
-                  categoryId={1}
+                  categoryId={3}
                 />
               </div>
             </div>

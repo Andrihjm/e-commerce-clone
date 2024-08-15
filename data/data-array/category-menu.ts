@@ -1,26 +1,19 @@
 export const categoryMenu = [
   {
     id: 1,
-    label: "All",
+    title: "Pizza",
   },
   {
     id: 2,
-    label: "Fruits",
+    title: "Teh asu",
   },
   {
     id: 3,
-    label: "Vegetables",
+    title: "Nes cape",
   },
+
   {
     id: 4,
-    label: "Dairy",
-  },
-  {
-    id: 5,
-    label: "Meat",
-  },
-  {
-    id: 6,
-    label: "Seafood",
+    title: "Lainya",
   },
 ];

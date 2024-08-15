@@ -1,4 +1,9 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import ProductCard from "./product-card";
+import { useIntersection } from "react-use";
+import { useCategoryStore } from "@/store/category";
 
 interface ProductsGroupListProps {
   title: string;
@@ -11,8 +16,24 @@ const ProductsGroupList = ({
   items,
   categoryId,
 }: ProductsGroupListProps) => {
+  const intersectionRef = useRef(null);
+  const intersection = useIntersection(intersectionRef, {
+    root: null,
+    rootMargin: "0px",
+    threshold: 1,
+  });
+  const setActiveCategoryId = useCategoryStore((state) => state.setActiveId);
+
+  useEffect(() => {
+    if (intersection?.isIntersecting) {
+      console.log("asdasfdA", title, categoryId);
+
+      setActiveCategoryId(categoryId);
+    }
+  }, [intersection?.isIntersecting, title, categoryId, setActiveCategoryId]);
+
   return (
-    <div className="hover">
+    <div id={title} ref={intersectionRef}>
       <h1 className="mb-8">{title}</h1>
 
       {items.map((itemsProducts, index) => (

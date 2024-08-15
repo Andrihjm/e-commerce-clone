@@ -69,7 +69,7 @@ const RangeSlider = React.forwardRef(
                 top: `10px`,
               }}
             >
-              <span className="absolute -right-1.5 text-sm">
+              <span className="absolute -right-1.5 text-xs">
                 {formatLabel ? formatLabel(value) : value}
               </span>
             </div>
