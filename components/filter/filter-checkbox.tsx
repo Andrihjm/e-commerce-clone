@@ -27,7 +27,7 @@ const FilterCheckbox = ({
       />
       <Label
         htmlFor={`checkbox-${String(value)}`}
-        className="flex-1 leading-none cursor-pointer"
+        className="flex-1 text-base leading-none cursor-pointer"
       >
         {label}
       </Label>

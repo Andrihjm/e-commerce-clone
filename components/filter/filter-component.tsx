@@ -9,7 +9,7 @@ import { defaultItems, items } from "@/data/data-array/menu-filter";
 
 const FilterComponent = () => {
   return (
-    <div className="pr-2">
+    <div className="pb-10 pr-2">
       <h1 className="mb-5 text-xl font-bold ">Filtering</h1>
 
       <div className="flex flex-col gap-8">
