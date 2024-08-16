@@ -10,7 +10,7 @@ const Category = () => {
 
   return (
     <>
-      <div className="sticky top-0 flex items-center justify-between py-4 bg-dark border-custom-primary z-50">
+      <div className="sticky top-0 flex items-center justify-between py-4 bg-dark border-custom-primary z-10">
         <div className="inline-flex items-center gap-1 p-1">
           {categoryMenu.map((category) => (
             <a

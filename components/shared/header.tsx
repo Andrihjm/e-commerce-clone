@@ -2,13 +2,15 @@ import Image from "next/image";
 import LogoPizza from "../../app/assets/images/pizza.png";
 import { Button } from "../ui/button";
 import { ArrowRight, ShoppingCart, User } from "lucide-react";
+import Link from "next/link";
+import SearchInput from "./search-input";
 
 const Header = () => {
   return (
     <>
       <header className="border-custom-primary">
         <div className="components flex items-center justify-between py-2">
-          <div className="flex items-center gap-4">
+          <Link href={"/"} className="flex items-center gap-4">
             <Image
               src={LogoPizza}
               alt="Logo"
@@ -16,11 +18,14 @@ const Header = () => {
               height={60}
               className="object-cover"
             />
-
             <div className="">
               <h1 className="text-2xl font-black uppercase">Next Pizza</h1>
               <p className="text-sm text-gray-400 leading-3">Beli yay woyyyy</p>
             </div>
+          </Link>
+
+          <div className="flex-1 mx-10">
+            <SearchInput />
           </div>
 
           <div className="flex items-center gap-3">
