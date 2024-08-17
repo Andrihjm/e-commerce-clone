@@ -6,7 +6,7 @@ import { Product } from "@prisma/client";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useClickAway, useDebounce } from "react-use";
 
 const SearchInput = () => {
@@ -20,14 +20,23 @@ const SearchInput = () => {
   });
 
   useDebounce(
-    () => {
-      ApiClient.products.search(searchQuery).then((items) => {
-        setProducts(items);
-      });
+    async () => {
+      try {
+        const response = await ApiClient.products.search(searchQuery);
+        setProducts(response);
+      } catch (error) {
+        console.log(error);
+      }
     },
     250,
     [searchQuery]
   );
+
+  const handleOnClickItem = () => {
+    setIsFocused(false);
+    setSearchQuery("");
+    setProducts([]);
+  };
 
   return (
     <>
@@ -61,7 +70,8 @@ const SearchInput = () => {
             {products.map((product) => (
               <Link
                 key={product.id}
-                href={`/product/1`}
+                href={`/product-detail/${product.id}`}
+                onClick={handleOnClickItem}
                 className="w-full flex items-center px-4 py-2 gap-2 hover:bg-primary/30"
               >
                 <Image

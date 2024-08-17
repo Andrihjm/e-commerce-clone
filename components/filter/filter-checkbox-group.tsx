@@ -5,6 +5,7 @@ import { Input } from "../ui/input";
 import FilterCheckbox from "./filter-checkbox";
 import React, { useState } from "react";
 import { Minus, Plus } from "lucide-react";
+import { Skeleton } from "../ui/skeleton";
 
 interface FilterComponentProps {
   title: string;
@@ -14,6 +15,7 @@ interface FilterComponentProps {
   searchInputPleaceholder?: string;
   onChange?: (values: string[]) => void;
   defaultValue?: string[];
+  loading?: boolean;
   className?: string;
 }
 
@@ -25,6 +27,7 @@ const FilterComponent = ({
   searchInputPleaceholder = "Search...",
   onChange,
   defaultValue,
+  loading,
 }: FilterComponentProps) => {
   const [isShowAll, setIsShowAll] = useState(false);
   const [searchFilterCheckbox, setsearchFilterCheckbox] = useState("");
@@ -40,6 +43,20 @@ const FilterComponent = ({
         e.label.toLowerCase().includes(searchFilterCheckbox.toLocaleLowerCase())
       )
     : defaultItems?.slice(0, limit);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col">
+        <p className="mb-3 font-bold">{title}</p>
+
+        {...Array(5)
+          .fill(0)
+          .map((_, index) => (
+            <Skeleton key={index} className="h-5 w-full my-1" />
+          ))}
+      </div>
+    );
+  }
 
   return (
     <div className="">

@@ -5,9 +5,16 @@ import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { RangeSlider } from "../shared/range-slider";
 import FilterCheckboxGroup from "./filter-checkbox-group";
-import { defaultItems, items } from "@/data/data-array/menu-filter";
+import { useFilterIngredients } from "@/hooks/use-filter-ingredients";
 
 const FilterComponent = () => {
+  const { ingredients, loading } = useFilterIngredients();
+
+  const items = ingredients.map((item) => ({
+    value: String(item.id),
+    label: item.name,
+  }));
+
   return (
     <div className="sticky top-24 pb-10 pr-2 border-right-primary">
       <h1 className="mb-5 text-xl font-bold ">Filtering</h1>
@@ -44,8 +51,9 @@ const FilterComponent = () => {
             <FilterCheckboxGroup
               title="Pizza"
               limit={6}
-              defaultItems={[...defaultItems, ...items]}
-              items={[...defaultItems, ...items]}
+              defaultItems={items.slice(0, 6)}
+              items={items}
+              loading={loading}
             />
           </div>
         </div>
