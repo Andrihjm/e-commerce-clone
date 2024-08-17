@@ -7,6 +7,7 @@ interface FilterCheckboxProps {
   endAdorment?: React.ReactNode;
   onCheckedChange?: (checked: boolean) => void;
   checked?: boolean;
+  name?: string;
 }
 
 const FilterCheckbox = ({
@@ -15,18 +16,19 @@ const FilterCheckbox = ({
   endAdorment,
   onCheckedChange,
   checked,
+  name,
 }: FilterCheckboxProps) => {
   return (
     <div className="flex items-center space-x-2 cursor-pointer">
       <Checkbox
-        id={`checkbox-${String(value)}`}
+        id={`checkbox-${String(name)}-${String(value)}`}
         value={value}
         checked={checked}
         onCheckedChange={onCheckedChange}
         className="h-6 w-6 rounded-[8px]"
       />
       <Label
-        htmlFor={`checkbox-${String(value)}`}
+        htmlFor={`checkbox-${String(name)}-${String(value)}`}
         className="flex-1 text-base leading-none cursor-pointer"
       >
         {label}

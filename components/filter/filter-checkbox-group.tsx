@@ -11,11 +11,13 @@ interface FilterComponentProps {
   title: string;
   limit?: number;
   items: Items[];
-  defaultItems: Items[];
+  defaultItems?: Items[];
   searchInputPleaceholder?: string;
-  onChange?: (values: string[]) => void;
+  onClickCheckbox?: (id: string) => void;
   defaultValue?: string[];
   loading?: boolean;
+  selected?: Set<string>;
+  name?: string;
   className?: string;
 }
 
@@ -25,8 +27,10 @@ const FilterComponent = ({
   items,
   defaultItems,
   searchInputPleaceholder = "Search...",
-  onChange,
+  onClickCheckbox,
   defaultValue,
+  selected,
+  name,
   loading,
 }: FilterComponentProps) => {
   const [isShowAll, setIsShowAll] = useState(false);
@@ -42,7 +46,7 @@ const FilterComponent = ({
     ? items.filter((e) =>
         e.label.toLowerCase().includes(searchFilterCheckbox.toLocaleLowerCase())
       )
-    : defaultItems?.slice(0, limit);
+    : (defaultItems || items)?.slice(0, limit);
 
   if (loading) {
     return (
@@ -76,11 +80,12 @@ const FilterComponent = ({
         {list.map((item, index) => (
           <FilterCheckbox
             key={index}
+            name={name}
             label={item.label}
             value={item.value}
             endAdorment={item.endAdorment}
-            checked={item.checked}
-            onCheckedChange={(e) => console.log(e)}
+            checked={selected?.has(item.value)}
+            onCheckedChange={() => onClickCheckbox?.(item.value)}
           />
         ))}
       </div>
