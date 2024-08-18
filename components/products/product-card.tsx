@@ -21,7 +21,7 @@ const ProductCard = ({
 }: ProductProps) => {
   return (
     <div className="rounded-md hover:-translate-y-4 transition-all duration-500">
-      <Link href={`/product/${id}`}>
+      <Link href={`/product-detail/${id}`}>
         <div className="h-[260px] w-full flex justify-center rounded-lg bg-secondary">
           <Image
             src={imageUrl}
