@@ -6,8 +6,21 @@ import {
   product2,
   product3,
 } from "@/data/data-array/product/products";
+import prisma from "@/lib/db";
+import { Suspense } from "react";
 
-export default function Home() {
+export default async function Home() {
+  const categories = await prisma.category.findMany({
+    include: {
+      products: {
+        include: {
+          ingredients: true,
+          productItem: true,
+        },
+      },
+    },
+  });
+
   return (
     <>
       <main className="components mt-4">
@@ -18,26 +31,35 @@ export default function Home() {
         <div className="components pt-6">
           <div className="flex gap-10">
             <div className="w-[250px] pr-2">
-              <FilterComponent />
+              <Suspense fallback={<div>Loading...</div>}>
+                <FilterComponent />
+              </Suspense>
             </div>
 
             <div className="flex-1">
               <div className="flex flex-col gap-16">
-                <ProductsGroupList
+                {categories.map(
+                  (category) =>
+                    category.products.length > 0 && (
+                      <ProductsGroupList
+                        key={category.id}
+                        title={category.name}
+                        items={category.products}
+                        categoryId={category.id}
+                      />
+                    )
+                )}
+
+                {/* <ProductsGroupList
                   title="Pizza"
                   items={[...product1]}
                   categoryId={1}
                 />
                 <ProductsGroupList
-                  title="Teh asu"
-                  items={[...product2]}
-                  categoryId={2}
-                />
-                <ProductsGroupList
                   title="Nes cape"
                   items={[...product3]}
                   categoryId={3}
-                />
+                /> */}
               </div>
             </div>
           </div>

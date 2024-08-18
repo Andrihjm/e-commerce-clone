@@ -36,20 +36,20 @@ const ProductsGroupList = ({
     <div id={title} ref={intersectionRef}>
       <h1 className="mb-8">{title}</h1>
 
-      {items.map((itemsProducts, index) => (
-        <div key={index} className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {itemsProducts.map((items: any) => (
-            <ProductCard
-              key={items.id}
-              id={items.id}
-              title={items.title}
-              description={items.description}
-              price={items.price}
-              imageUrl={items.imageUrl}
-            />
-          ))}
-        </div>
-      ))}
+      {/* {items.map((itemsProducts, index) => ( */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {items.map((items: any) => (
+          <ProductCard
+            key={items.id}
+            id={items.id}
+            name={items.name}
+            description={items.description}
+            price={items.price}
+            imageUrl={items.imageUrl}
+          />
+        ))}
+      </div>
+      {/* // ))} */}
     </div>
   );
 };
