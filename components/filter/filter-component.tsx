@@ -4,80 +4,25 @@ import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { RangeSlider } from "../shared/range-slider";
 import FilterCheckboxGroup from "./filter-checkbox-group";
+import { useFilters } from "@/hooks/use-filters";
 import { useFilterIngredients } from "@/hooks/use-filter-ingredients";
-import { useEffect, useState } from "react";
-import { useSet } from "react-use";
-import qs from "qs";
-import { useRouter, useSearchParams } from "next/navigation";
-
-interface DataPriceProps {
-  priceFromTo: number;
-  priceTo: number;
-}
-
-interface QueryFilters extends DataPriceProps {
-  pizzaTypes: string;
-  sizes: string;
-  ingredients: string;
-}
+import { useQueryFilters } from "@/hooks/use-query-filters";
 
 const FilterComponent = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams() as unknown as Map<
-    keyof QueryFilters,
-    string
-  >;
-
-  const { ingredients, loading, onAddId, selectedId } = useFilterIngredients(
-    searchParams.get("ingredients")?.split(",")
-  );
-
-  const [price, setPrice] = useState<DataPriceProps>({
-    priceFromTo: Number(searchParams.get("priceFromTo")) || 0,
-    priceTo: Number(searchParams.get("priceTo")) || 0,
-  });
-
-  const [sizes, { toggle: toggleSize }] = useSet(
-    new Set<string>(
-      searchParams.has("sizes") ? searchParams.get("sizes")?.split(",") : []
-    )
-  );
-  const [pizzaTypes, { toggle: tooglePizzaTypes }] = useSet(
-    new Set<string>(
-      searchParams.has("pizzaTypes")
-        ? searchParams.get("pizzaTypes")?.split(",")
-        : []
-    )
-  );
+  const { ingredients, loading } = useFilterIngredients();
+  const filters = useFilters();
 
   const items = ingredients.map((item) => ({
     value: String(item.id),
     label: item.name,
   }));
 
-  const updatePrice = (name: keyof DataPriceProps, value: number) => {
-    setPrice({
-      ...price,
-      [name]: value,
-    });
+  useQueryFilters(filters);
+
+  const updatedPrice = (price: number[]) => {
+    filters.setPrice("priceFromTo", price[0]);
+    filters.setPrice("priceTo", price[1]);
   };
-
-  useEffect(() => {
-    const filters = {
-      ...price,
-      pizzaTypes: Array.from(pizzaTypes),
-      sizes: Array.from(sizes),
-      ingredients: Array.from(selectedId),
-    };
-
-    const query = qs.stringify(filters, {
-      arrayFormat: "comma",
-    });
-
-    router.push(`?${query}`, {
-      scroll: false,
-    });
-  }, [price, sizes, pizzaTypes, selectedId, router]);
 
   return (
     <div className="sticky top-24 pb-10 pr-2 border-right-primary">
@@ -88,8 +33,8 @@ const FilterComponent = () => {
           title="Pizza Type"
           name="pizzaTypes"
           className="mb-5"
-          onClickCheckbox={tooglePizzaTypes}
-          selected={pizzaTypes}
+          onClickCheckbox={filters.setPizzaTypes}
+          selected={filters.pizzaTypes}
           items={[
             { label: "Indonesia", value: "1" },
             { label: "Italy", value: "2" },
@@ -101,8 +46,8 @@ const FilterComponent = () => {
           title="Pizza"
           name="size"
           className="mb-5"
-          onClickCheckbox={toggleSize}
-          selected={sizes}
+          onClickCheckbox={filters.setSizes}
+          selected={filters.sizes}
           items={[
             { label: "20 cm", value: "20" },
             { label: "30 cm", value: "30" },
@@ -120,9 +65,9 @@ const FilterComponent = () => {
               placeholder="0"
               min={0}
               max={1000}
-              value={String(price.priceFromTo)}
+              value={String(filters.price.priceFromTo)}
               onChange={(e) =>
-                updatePrice("priceFromTo", Number(e.target.value))
+                filters.setPrice("priceFromTo", Number(e.target.value))
               }
             />
             <Input
@@ -130,8 +75,10 @@ const FilterComponent = () => {
               placeholder="1000"
               min={100}
               max={1000}
-              value={String(price.priceTo)}
-              onChange={(e) => updatePrice("priceTo", Number(e.target.value))}
+              value={String(filters.price.priceTo)}
+              onChange={(e) =>
+                filters.setPrice("priceTo", Number(e.target.value))
+              }
             />
           </div>
 
@@ -139,10 +86,11 @@ const FilterComponent = () => {
             min={0}
             max={5000}
             step={10}
-            value={[price.priceFromTo || 0, price.priceTo || 5000]}
-            onValueChange={([priceFromTo, priceTo]) =>
-              setPrice({ priceFromTo, priceTo })
-            }
+            value={[
+              filters.price.priceFromTo || 0,
+              filters.price.priceTo || 5000,
+            ]}
+            onValueChange={updatedPrice}
           />
         </div>
 
@@ -157,8 +105,8 @@ const FilterComponent = () => {
               defaultItems={items.slice(0, 6)}
               items={items}
               loading={loading}
-              onClickCheckbox={onAddId}
-              selected={selectedId}
+              onClickCheckbox={filters.setSelecredIngredients}
+              selected={filters.selecredIngredients}
             />
           </div>
         </div>
