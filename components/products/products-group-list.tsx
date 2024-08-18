@@ -26,8 +26,6 @@ const ProductsGroupList = ({
 
   useEffect(() => {
     if (intersection?.isIntersecting) {
-      console.log("asdasfdA", title, categoryId);
-
       setActiveCategoryId(categoryId);
     }
   }, [intersection?.isIntersecting, title, categoryId, setActiveCategoryId]);

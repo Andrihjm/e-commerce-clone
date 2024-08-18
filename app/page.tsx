@@ -1,11 +1,6 @@
 import FilterComponent from "@/components/filter/filter-component";
 import ProductsGroupList from "@/components/products/products-group-list";
 import Category from "@/components/shared/category";
-import {
-  product1,
-  product2,
-  product3,
-} from "@/data/data-array/product/products";
 import prisma from "@/lib/db";
 import { Suspense } from "react";
 
@@ -26,7 +21,9 @@ export default async function Home() {
       <main className="components mt-4">
         <h1 className="text-2xl font-extrabold">Pizza coyyy</h1>
 
-        <Category />
+        <Category
+          items={categories.filter((category) => category.products.length > 0)}
+        />
 
         <div className="components pt-6">
           <div className="flex gap-10">
