@@ -1,6 +1,5 @@
 "use client";
 
-import FilterCheckbox from "./filter-checkbox";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { RangeSlider } from "../shared/range-slider";
@@ -8,22 +7,47 @@ import FilterCheckboxGroup from "./filter-checkbox-group";
 import { useFilterIngredients } from "@/hooks/use-filter-ingredients";
 import { useEffect, useState } from "react";
 import { useSet } from "react-use";
+import qs from "qs";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface DataPriceProps {
   priceFromTo: number;
   priceTo: number;
 }
 
+interface QueryFilters extends DataPriceProps {
+  pizzaTypes: string;
+  sizes: string;
+  ingredients: string;
+}
+
 const FilterComponent = () => {
-  const { ingredients, loading, onAddId, selectedId } = useFilterIngredients();
+  const router = useRouter();
+  const searchParams = useSearchParams() as unknown as Map<
+    keyof QueryFilters,
+    string
+  >;
+
+  const { ingredients, loading, onAddId, selectedId } = useFilterIngredients(
+    searchParams.get("ingredients")?.split(",")
+  );
+
   const [price, setPrice] = useState<DataPriceProps>({
-    priceFromTo: 0,
-    priceTo: 5000,
+    priceFromTo: Number(searchParams.get("priceFromTo")) || 0,
+    priceTo: Number(searchParams.get("priceTo")) || 0,
   });
 
-  const [sizes, { toggle: toggleSize }] = useSet(new Set<string>([]));
+  const [sizes, { toggle: toggleSize }] = useSet(
+    new Set<string>(
+      searchParams.has("sizes") ? searchParams.get("sizes")?.split(",") : []
+    )
+  );
   const [pizzaTypes, { toggle: tooglePizzaTypes }] = useSet(
-    new Set<string>([])
+    new Set<string>(
+      searchParams.has("pizzaTypes")
+        ? searchParams.get("pizzaTypes")?.split(",")
+        : []
+    )
   );
 
   const items = ingredients.map((item) => ({
@@ -39,8 +63,21 @@ const FilterComponent = () => {
   };
 
   useEffect(() => {
-    console.log({ price, sizes, pizzaTypes, selectedId });
-  }, [price, sizes, pizzaTypes, selectedId]);
+    const filters = {
+      ...price,
+      pizzaTypes: Array.from(pizzaTypes),
+      sizes: Array.from(sizes),
+      ingredients: Array.from(selectedId),
+    };
+
+    const query = qs.stringify(filters, {
+      arrayFormat: "comma",
+    });
+
+    router.push(`?${query}`, {
+      scroll: false,
+    });
+  }, [price, sizes, pizzaTypes, selectedId, router]);
 
   return (
     <div className="sticky top-24 pb-10 pr-2 border-right-primary">
@@ -102,7 +139,7 @@ const FilterComponent = () => {
             min={0}
             max={5000}
             step={10}
-            value={[price.priceFromTo, price.priceTo]}
+            value={[price.priceFromTo || 0, price.priceTo || 5000]}
             onValueChange={([priceFromTo, priceTo]) =>
               setPrice({ priceFromTo, priceTo })
             }

@@ -10,11 +10,13 @@ interface UseFilterIngredientsProps {
   onAddId: (id: string) => void;
 }
 
-export const useFilterIngredients = (): UseFilterIngredientsProps => {
+export const useFilterIngredients = (
+  values: string[] = []
+): UseFilterIngredientsProps => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [loading, setloading] = useState(true);
 
-  const [selectedId, { toggle }] = useSet(new Set<string>([]));
+  const [selectedId, { toggle }] = useSet(new Set<string>(values));
 
   useEffect(() => {
     async function fetchIngredients() {
