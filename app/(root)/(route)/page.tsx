@@ -46,17 +46,6 @@ export default async function Home() {
                       />
                     )
                 )}
-
-                {/* <ProductsGroupList
-                  title="Pizza"
-                  items={[...product1]}
-                  categoryId={1}
-                />
-                <ProductsGroupList
-                  title="Nes cape"
-                  items={[...product3]}
-                  categoryId={3}
-                /> */}
               </div>
             </div>
           </div>
