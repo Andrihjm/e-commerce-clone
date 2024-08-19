@@ -8,9 +8,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
-import CoosePizzaForm from "../form/coose-product-form";
 import { ProductWithRelations } from "@/@types/prisma";
-import CooseProductForm from "../form/coose-product-form";
+import CoosePizzaForm from "../form/coose-pizza-form";
+import CooseProductForm from "../form/coose-products-form";
 
 interface ChooseProductModalsProps {
   product: ProductWithRelations;
@@ -32,6 +32,7 @@ const ChooseProductModals = ({ product }: ChooseProductModalsProps) => {
             description={product.description}
             price={product.price}
             imageUrl={product.imageUrl}
+            ingredients={product.ingredients}
           />
         ) : (
           <CooseProductForm
