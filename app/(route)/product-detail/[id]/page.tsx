@@ -15,8 +15,6 @@ const page = async ({ params }: Props) => {
     },
   });
 
-  console.log(productApi);
-
   if (!productApi) {
     return <div>Product not found</div>;
   }

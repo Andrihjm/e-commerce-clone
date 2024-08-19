@@ -1,52 +1,30 @@
-import PizzaImage from "@/components/products/pizza-image";
+import ChooseProductModals from "@/components/modals/choose-product-modals";
 import prisma from "@/lib/db";
+import { notFound } from "next/navigation";
 import React from "react";
 
-interface Props {
+interface ProductProps {
   params: {
     id: string;
   };
 }
 
-const page = async ({ params }: Props) => {
-  const productApi = await prisma.product.findUnique({
+const page = async ({ params }: ProductProps) => {
+  const products = await prisma.product.findFirst({
     where: {
       id: Number(params.id),
     },
+    include: {
+      ingredients: true,
+      productItem: true,
+    },
   });
 
-  console.log(productApi);
-
-  if (!productApi) {
-    return <div>Product not found</div>;
+  if (!products) {
+    return notFound();
   }
 
-  return (
-    <div className="components flex flex-col my-10">
-      <div className="flex flex-1">
-        <PizzaImage imageUrl={productApi.imageUrl} size={40} />
-
-        <div className="w-[490px] bg-gray-500/10 p-7">
-          <h2
-            title={productApi.name}
-            className="mb-1 line-clamp-2 font-extrabold"
-          >
-            {productApi.name} Lorem ipsum dolor sit amet consectetur,
-            adipisicing elit. Optio dicta earum incidunt eum id expedita,
-            reprehenderit necessitatibus vero minima autem?
-          </h2>
-          <p
-            title={productApi.description}
-            className="line-clamp-2 text-gray-400"
-          >
-            {productApi.description} Lorem, ipsum dolor sit amet consectetur
-            adipisicing elit. Quis nisi aperiam dolores laborum? Est, adipisci
-            repellendus quidem aspernatur quam facere?
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+  return <ChooseProductModals product={products} />;
 };
 
 export default page;

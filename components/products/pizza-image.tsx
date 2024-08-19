@@ -5,7 +5,7 @@ import React from "react";
 interface PizzaImageProps {
   className?: string;
   imageUrl: string;
-  size: number;
+  size: 20 | 30 | 40;
 }
 
 const PizzaImage = ({ className, imageUrl, size }: PizzaImageProps) => {
