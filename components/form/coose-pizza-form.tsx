@@ -10,15 +10,17 @@ import {
   pizzaTypes,
 } from "@/constants/pizza";
 import { useState } from "react";
-import { Ingredient } from "@prisma/client";
+import { Ingredient, ProductItem } from "@prisma/client";
+import IngredientsItems from "../shared/ingredients-items";
+import { useSet } from "react-use";
 
 interface CoosePizzaFormProps {
   name: string;
   imageUrl: string;
   description: string;
   price: number;
-  items?: any[];
-  onClickAdd?: VoidFunction;
+  items?: ProductItem[];
+  onClickAddCart?: VoidFunction;
   ingredients: Ingredient[];
 }
 
@@ -28,11 +30,15 @@ const CoosePizzaForm = ({
   description,
   price,
   items,
-  onClickAdd,
+  onClickAddCart,
   ingredients,
 }: CoosePizzaFormProps) => {
   const [size, setSize] = useState<PizzaSizes>(300);
   const [type, setType] = useState<PizzaTypes>(1);
+
+  const [selectedIngredients, { toggle: addIngredient }] = useSet(
+    new Set<number>([])
+  );
 
   return (
     <div className="flex flex-1">
@@ -57,6 +63,21 @@ const CoosePizzaForm = ({
             value={String(type)}
             onClick={(value) => setType(Number(value) as PizzaTypes)}
           />
+        </div>
+
+        <div className="w-full max-h-[400px] mt-5 pb-2 rounded-md bg-gray-100 overflow-auto scrollbar">
+          <div className="grid grid-cols-3 gap-3">
+            {ingredients.map((ingredient) => (
+              <IngredientsItems
+                key={ingredient.id}
+                name={ingredient.name}
+                price={ingredient.price}
+                imageUrl={ingredient.imageUrl}
+                active={selectedIngredients.has(ingredient.id)}
+                onClick={() => addIngredient(ingredient.id)}
+              />
+            ))}
+          </div>
         </div>
 
         <Button className="h-[55px] w-full px-10 mt-10 text-base rounded-md">

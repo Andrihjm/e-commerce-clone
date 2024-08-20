@@ -22,7 +22,7 @@ const page = async ({ params }: Props) => {
   return (
     <div className="components flex flex-col my-10">
       <div className="flex flex-1">
-        <PizzaImage imageUrl={productApi.imageUrl} size={40} />
+        <PizzaImage imageUrl={productApi.imageUrl} size={450} />
 
         <div className="w-[490px] bg-gray-500/10 p-7">
           <h2
