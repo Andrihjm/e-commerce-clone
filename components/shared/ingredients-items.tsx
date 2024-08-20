@@ -20,7 +20,7 @@ const IngredientsItems = ({
   return (
     <div
       className={cn(
-        "w-32 relative flex flex-col items-center rounded-md shadow-md bg-white cursor-pointer",
+        "w-full relative flex flex-col items-center rounded-md shadow-md bg-white cursor-pointer",
         { "border border-primary": active }
       )}
       onClick={onClick}

@@ -4,27 +4,28 @@ import { Button } from "../ui/button";
 import PizzaImage from "../products/pizza-image";
 import GroupVariant from "../shared/group-variant";
 import {
+  mapPizzaType,
   PizzaSizes,
   pizzaSizes,
   PizzaTypes,
   pizzaTypes,
 } from "@/constants/pizza";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ingredient, ProductItem } from "@prisma/client";
 import IngredientsItems from "../shared/ingredients-items";
 import { useSet } from "react-use";
 
-interface CoosePizzaFormProps {
+interface ChoosePizzaFormProps {
   name: string;
   imageUrl: string;
   description: string;
   price: number;
   items?: ProductItem[];
-  onClickAddCart?: VoidFunction;
+  onClickAddCart?: () => void;
   ingredients: Ingredient[];
 }
 
-const CoosePizzaForm = ({
+const ChoosePizzaForm = ({
   name,
   imageUrl,
   description,
@@ -32,13 +33,58 @@ const CoosePizzaForm = ({
   items,
   onClickAddCart,
   ingredients,
-}: CoosePizzaFormProps) => {
+}: ChoosePizzaFormProps) => {
   const [size, setSize] = useState<PizzaSizes>(300);
   const [type, setType] = useState<PizzaTypes>(1);
 
-  const [selectedIngredients, { toggle: addIngredient }] = useSet(
-    new Set<number>([])
+  const [selectedIngredients, { toggle: addIngredient }] = useSet<number>(
+    new Set([])
   );
+
+  const pizzaPrice =
+    items?.find((item) => item.pizzaType === type && item.size === size)
+      ?.price || 0;
+
+  const totalIngredientPrice = ingredients
+    .filter((ingredient) => selectedIngredients.has(ingredient.id))
+    .reduce((acc, ingredient) => acc + ingredient.price, 0);
+
+  const totalPrice = pizzaPrice + totalIngredientPrice;
+  const textDetails = `${size}cm, ${mapPizzaType[type]}`;
+
+  const filterPizzaByType = items?.filter(
+    (pizzaItems) => pizzaItems.pizzaType === type
+  );
+
+  const availablePizzasSizes = pizzaTypes.map((typePizza) => ({
+    name: typePizza.name,
+    value: typePizza.value,
+    disabled: !filterPizzaByType?.some(
+      (pizza) => Number(pizza.size) === Number(typePizza.value)
+    ),
+  }));
+
+  const handleOnClickAddToCart = () => {
+    console.log({
+      size,
+      type,
+      ingredients: selectedIngredients,
+    });
+    if (onClickAddCart) {
+      onClickAddCart();
+    }
+  };
+
+  useEffect(() => {
+    const isAvailableSize = availablePizzasSizes.find(
+      (item) => Number(item.value) === size && !item.disabled
+    );
+    const availableSize = availablePizzasSizes.find((item) => !item.disabled);
+
+    if (!isAvailableSize && availableSize) {
+      setSize(Number(availableSize.value) as PizzaSizes);
+    }
+  }, [availablePizzasSizes, size]);
 
   return (
     <div className="flex flex-1">
@@ -48,7 +94,7 @@ const CoosePizzaForm = ({
         <h1 className="mb-1 line-clamp-2 font-extrabold">{name}</h1>
 
         <p title={description} className="line-clamp-4 text-gray-700">
-          {description}
+          {textDetails}
         </p>
 
         <div className="flex flex-col gap-4 mt-5">
@@ -80,12 +126,15 @@ const CoosePizzaForm = ({
           </div>
         </div>
 
-        <Button className="h-[55px] w-full px-10 mt-10 text-base rounded-md">
-          Total belanjaanmu cok {price}
+        <Button
+          onClick={handleOnClickAddToCart}
+          className="h-[55px] w-full px-10 mt-10 text-base rounded-md"
+        >
+          Total belanja Anda: Rp {totalPrice.toLocaleString()}
         </Button>
       </div>
     </div>
   );
 };
 
-export default CoosePizzaForm;
+export default ChoosePizzaForm;
