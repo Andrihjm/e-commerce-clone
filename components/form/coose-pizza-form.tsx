@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { Ingredient, ProductItem } from "@prisma/client";
 import IngredientsItems from "../shared/ingredients-items";
 import { useSet } from "react-use";
+import { calcTotalPizzaPrice } from "@/lib/calc-total-pizza-price";
+import { getAvailablePizzaSize } from "@/lib/get-available-pizza-size";
 
 interface ChoosePizzaFormProps {
   name: string;
@@ -41,39 +43,17 @@ const ChoosePizzaForm = ({
     new Set([])
   );
 
-  const pizzaPrice =
-    items?.find((item) => item.pizzaType === type && item.size === size)
-      ?.price || 0;
-
-  const totalIngredientPrice = ingredients
-    .filter((ingredient) => selectedIngredients.has(ingredient.id))
-    .reduce((acc, ingredient) => acc + ingredient.price, 0);
-
-  const totalPrice = pizzaPrice + totalIngredientPrice;
   const textDetails = `${size}cm, ${mapPizzaType[type]}`;
 
-  const filterPizzaByType = items?.filter(
-    (pizzaItems) => pizzaItems.pizzaType === type
+  const totalPrice = calcTotalPizzaPrice(
+    type,
+    size,
+    items,
+    ingredients,
+    selectedIngredients
   );
 
-  const availablePizzasSizes = pizzaTypes.map((typePizza) => ({
-    name: typePizza.name,
-    value: typePizza.value,
-    disabled: !filterPizzaByType?.some(
-      (pizza) => Number(pizza.size) === Number(typePizza.value)
-    ),
-  }));
-
-  const handleOnClickAddToCart = () => {
-    console.log({
-      size,
-      type,
-      ingredients: selectedIngredients,
-    });
-    if (onClickAddCart) {
-      onClickAddCart();
-    }
-  };
+  const availablePizzasSizes = getAvailablePizzaSize(type, items);
 
   useEffect(() => {
     const isAvailableSize = availablePizzasSizes.find(
@@ -84,7 +64,13 @@ const ChoosePizzaForm = ({
     if (!isAvailableSize && availableSize) {
       setSize(Number(availableSize.value) as PizzaSizes);
     }
-  }, [availablePizzasSizes, size]);
+  }, [availablePizzasSizes, type, size]);
+
+  const handleOnClickAddToCart = () => {
+    if (onClickAddCart) {
+      onClickAddCart();
+    }
+  };
 
   return (
     <div className="flex flex-1">
