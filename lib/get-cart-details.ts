@@ -1,4 +1,3 @@
-import { CartDTO } from "@/services/DTO/cart.dto";
 import { calcCartTotalPrice } from "./calc-cart-total-price";
 
 export type CartStateItem = {
@@ -18,8 +17,18 @@ interface GetCartDetailsProps {
   totalAmount: number;
 }
 
-export const getCartDetails = (data: CartDTO): GetCartDetailsProps => {
-  const items = data.items?.map((item) => ({
+export const getCartDetails = (data: any): GetCartDetailsProps => {
+  // Pastikan data memiliki struktur yang benar
+  if (!data || !data.data || !data.data.cartItems) {
+    return {
+      items: [],
+      totalAmount: 0,
+    };
+  }
+
+  const cartData = data.data;
+
+  const items = cartData.cartItems.map((item: any) => ({
     id: item.id,
     name: item.productItem.product.name,
     quantity: item.quantity,
@@ -28,7 +37,7 @@ export const getCartDetails = (data: CartDTO): GetCartDetailsProps => {
     disabled: false,
     pizzaSize: item.productItem.size,
     pizzaType: item.productItem.pizzaType,
-    ingredients: item.ingredients.map((ingredient) => ({
+    ingredients: item.ingredients.map((ingredient: any) => ({
       name: ingredient.name,
       price: ingredient.price,
     })),
@@ -36,6 +45,6 @@ export const getCartDetails = (data: CartDTO): GetCartDetailsProps => {
 
   return {
     items,
-    totalAmount: data.totalAmount,
+    totalAmount: cartData.totalAmount,
   };
 };

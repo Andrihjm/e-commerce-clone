@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import {
@@ -17,24 +16,27 @@ import CartSidebarCard from "./cart-sidebar-card";
 import { getCartItemDetails } from "@/lib/get-cartcitem-details";
 import { useCartStore } from "@/store/cart";
 import { PizzaSizes, PizzaTypes } from "@/constants/pizza";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface CartSidebarProps {
   children: React.ReactNode;
 }
 
 const CartSidebar = ({ children }: CartSidebarProps) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [totalAmount, fetchCartItems, items] = useCartStore((state) => [
     state.totalAmount,
     state.fetchCartItems,
     state.items || [],
   ]);
+
   useEffect(() => {
-    const loadCartItems = async () => {
+    const fetchData = async () => {
       await fetchCartItems();
-      console.log("Items after fetch:", items);
+      setIsLoading(false);
     };
-    loadCartItems();
+
+    fetchData();
   }, [fetchCartItems]);
 
   return (
@@ -48,7 +50,9 @@ const CartSidebar = ({ children }: CartSidebarProps) => {
           </SheetHeader>
 
           <div className="flex-1 overflow-auto scrollbar">
-            {items.length > 0 ? (
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : items.length > 0 ? (
               items.map((item) => (
                 <CartSidebarCard
                   key={item.id}
@@ -66,21 +70,6 @@ const CartSidebar = ({ children }: CartSidebarProps) => {
             ) : (
               <p>Your cart is empty</p>
             )}
-
-            {/* {items.map((item) => (
-              <CartSidebarCard
-                key={item.id}
-                name={item.name}
-                price={item.price}
-                quantity={item.quantity}
-                details={getCartItemDetails(
-                  item.ingredients,
-                  item.pizzaType as PizzaTypes,
-                  item.pizzaSize as PizzaSizes
-                )}
-                imageUrl={item.imageUrl}
-              />
-            ))} */}
           </div>
 
           <SheetFooter className="-mx-3 py-8 px-5 bg-white">

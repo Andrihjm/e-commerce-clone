@@ -49,7 +49,7 @@ const CartSidebarCard = ({
           <h2 className="mb-0 text-lg font-bold leading-6">{name}</h2>
         </div>
 
-        {details && <p className="w-[90%] text-xs text-gray-400">{details}</p>}
+        {details && <p className="text-xs line-clamp-2 text-gray-400">{details}</p>}
 
         <Separator className="my-2" />
 

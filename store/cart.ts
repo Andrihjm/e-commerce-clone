@@ -1,3 +1,4 @@
+import { items } from "@/data/data-array/menu-filter";
 import { CartStateItem, getCartDetails } from "@/lib/get-cart-details";
 import { ApiClient } from "@/services/api-client";
 import { create } from "zustand";
@@ -32,9 +33,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     try {
       set({ loading: true, error: false });
       const response = await ApiClient.cart.fetchCartItemsService();
-      const cartDetails = getCartDetails(response);
-      console.log("Cart Details:", cartDetails);
-      set(cartDetails);
+      set(getCartDetails(response));
     } catch (error) {
       console.error(error);
       set({ error: true });
