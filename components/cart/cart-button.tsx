@@ -1,12 +1,14 @@
 import { ArrowRight, ShoppingCart } from "lucide-react";
-import { Button } from "../ui/button";
 import CartSidebar from "./cart-sidebar";
 
 const CartButton = () => {
+  const buttonClass =
+    "group relative h-10 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
+
   return (
     <>
       <CartSidebar>
-        <Button className="group relative">
+        <div className={buttonClass}>
           <p>$520</p>
           <span className="h-full w-[1px] mx-3 bg-white/30" />
 
@@ -19,7 +21,7 @@ const CartButton = () => {
             size={20}
             className="absolute right-5 transition-all duration-500 -translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
           />
-        </Button>
+        </div>
       </CartSidebar>
     </>
   );

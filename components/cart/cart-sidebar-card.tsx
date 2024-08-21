@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import CountButton from "./count-button";
-import { TrashIcon } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Separator } from "../ui/separator";
 
 interface CartSidebarCardProps {
@@ -30,7 +30,7 @@ const CartSidebarCard = ({
   return (
     <div
       className={cn(
-        "flex items-center justify-center p-5 gap-5 rounded-sm bg-white",
+        "flex items-center justify-center mb-2 p-5 gap-5 rounded-sm bg-white",
         disabled && "opacity-50 pointer-events-none"
       )}
     >
@@ -57,12 +57,12 @@ const CartSidebarCard = ({
           <CountButton value={quantity} onClick={onClickCountButton} />
 
           <div className="flex items-center gap-2">
-            <p className="text-sm font-bold">${price}</p>
+            <p className="pt-1 text-sm font-bold">${price}</p>
 
-            <TrashIcon
-              size={16}
+            <Trash2
+              size={18}
               onClick={onClickRemove}
-              className="text-gray-400 cursor-pointer hover:text-gray-600"
+              className="text-gray-500 cursor-pointer hover:text-primary"
             />
           </div>
         </div>

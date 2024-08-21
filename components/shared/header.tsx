@@ -5,6 +5,7 @@ import { User } from "lucide-react";
 import Link from "next/link";
 import SearchInput from "./search-input";
 import CartButton from "../cart/cart-button";
+import CartSidebar from "../cart/cart-sidebar";
 
 const Header = () => {
   return (
