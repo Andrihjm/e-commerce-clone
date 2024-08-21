@@ -24,11 +24,13 @@ interface CartSidebarProps {
 
 const CartSidebar = ({ children }: CartSidebarProps) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [totalAmount, fetchCartItems, items] = useCartStore((state) => [
-    state.totalAmount,
-    state.fetchCartItems,
-    state.items || [],
-  ]);
+  const [totalAmount, fetchCartItems, items, updateItemsQuantity] =
+    useCartStore((state) => [
+      state.totalAmount,
+      state.fetchCartItems,
+      state.items || [],
+      state.updateItemsQuantity,
+    ]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +40,15 @@ const CartSidebar = ({ children }: CartSidebarProps) => {
 
     fetchData();
   }, [fetchCartItems]);
+
+  const onClickCountButton = (
+    id: number,
+    quantity: number,
+    type: "plus" | "minus"
+  ) => {
+    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
+    updateItemsQuantity(id, newQuantity);
+  };
 
   return (
     <>
@@ -65,6 +76,9 @@ const CartSidebar = ({ children }: CartSidebarProps) => {
                     item.pizzaSize as PizzaSizes
                   )}
                   imageUrl={item.imageUrl}
+                  onClickCountButton={(type) =>
+                    onClickCountButton(item.id, item.quantity, type)
+                  }
                 />
               ))
             ) : (
