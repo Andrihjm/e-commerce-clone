@@ -23,7 +23,8 @@ interface ChoosePizzaFormProps {
   description: string;
   price: number;
   items?: ProductItem[];
-  onClickAddCart?: () => void;
+  currentItemId?: number;
+  onClickAddCart: (itemId: number, ingredient: number[]) => void;
   ingredients: Ingredient[];
 }
 
@@ -43,7 +44,11 @@ const ChoosePizzaForm = ({
     new Set([])
   );
 
-  const textDetails = `${size}cm, ${mapPizzaType[type]}`;
+  const currentItemId = items?.find(
+    (item) => item.pizzaType === type && item.size === size
+  )?.id;
+
+  const textDetails = `${size} cm, ${mapPizzaType[type]}`;
 
   const totalPrice = calcTotalPizzaPrice(
     type,
@@ -67,8 +72,8 @@ const ChoosePizzaForm = ({
   }, [availablePizzasSizes, type, size]);
 
   const handleOnClickAddToCart = () => {
-    if (onClickAddCart) {
-      onClickAddCart();
+    if (currentItemId) {
+      onClickAddCart(currentItemId, Array.from(selectedIngredients));
     }
   };
 
@@ -116,7 +121,7 @@ const ChoosePizzaForm = ({
           onClick={handleOnClickAddToCart}
           className="h-[55px] w-full px-10 mt-10 text-base rounded-md"
         >
-          Total belanja Anda: Rp {totalPrice.toLocaleString()}
+          Total belanja Anda Rp.{price.toLocaleString()}.-
         </Button>
       </div>
     </div>

@@ -32,9 +32,6 @@ export const useFilters = (): ReturnProps => {
     keyof QueryFilters,
     string
   >;
-  //   const { ingredients, loading, onAddId, selectedI } = useFilterIngredients(
-  //     searchParams.get("ingredients")?.split(",")
-  //   );
 
   const [selecredIngredients, { toggle: toggleIngredients }] = useSet(
     new Set<string>(searchParams.get("ingredients")?.split(",") || [])

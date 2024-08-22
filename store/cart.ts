@@ -1,5 +1,6 @@
 import { CartStateItem, getCartDetails } from "@/lib/get-cart-details";
 import { ApiClient } from "@/services/api-client";
+import { CreateCartItemValues } from "@/services/DTO/cart.dto";
 import { create } from "zustand";
 
 export interface CartState {
@@ -14,11 +15,11 @@ export interface CartState {
   //   Update items quantity
   updateItemsQuantity: (id: number, quantity: number) => Promise<void>;
 
-  //   Add items to Cart
-  addCartItems: (values: any) => Promise<void>;
-
   //   Remove items from Cart
   deletedCartItem: (id: number) => Promise<void>;
+
+  //   Add items to Cart
+  addCartItems: (values: CreateCartItemValues) => Promise<void>;
 }
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -67,7 +68,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   //   Add items to Cart
-  addCartItems: async (values: any) => {
+  addCartItems: async (values: CreateCartItemValues) => {
     try {
       set({ loading: true, error: false });
       const response = await ApiClient.cart.addItemCartService(values);

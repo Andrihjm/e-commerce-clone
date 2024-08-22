@@ -6,6 +6,7 @@ interface CooseProductFormProps {
   imageUrl: string;
   description: string;
   price: number;
+  onClickAddCart?: () => void;
 }
 
 const CooseProductForm = ({
@@ -13,6 +14,7 @@ const CooseProductForm = ({
   imageUrl,
   description,
   price,
+  onClickAddCart,
 }: CooseProductFormProps) => {
   return (
     <div className="flex flex-1">
@@ -33,8 +35,11 @@ const CooseProductForm = ({
           {description}
         </p>
 
-        <Button className="h-[55px] w-full px-10 mt-10 text-base rounded-md">
-          Total belanjaanmu cok {price}
+        <Button
+          onClick={onClickAddCart}
+          className="h-[55px] w-full px-10 mt-10 text-base rounded-md"
+        >
+          Total belanjaan anda Rp.{price.toLocaleString()}.-
         </Button>
       </div>
     </div>

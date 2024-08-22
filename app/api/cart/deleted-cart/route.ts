@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(id: number, req: NextResponse) {
+export async function DELETE(req: NextRequest) {
   try {
     const token = req.cookies.get("cartToken")?.value;
 
