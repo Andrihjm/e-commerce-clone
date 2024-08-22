@@ -24,13 +24,19 @@ interface CartSidebarProps {
 
 const CartSidebar = ({ children }: CartSidebarProps) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [totalAmount, fetchCartItems, items, updateItemsQuantity] =
-    useCartStore((state) => [
-      state.totalAmount,
-      state.fetchCartItems,
-      state.items || [],
-      state.updateItemsQuantity,
-    ]);
+  const [
+    totalAmount,
+    fetchCartItems,
+    items,
+    updateItemsQuantity,
+    deletedCartItem,
+  ] = useCartStore((state) => [
+    state.totalAmount,
+    state.fetchCartItems,
+    state.items || [],
+    state.updateItemsQuantity,
+    state.deletedCartItem,
+  ]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,6 +85,7 @@ const CartSidebar = ({ children }: CartSidebarProps) => {
                   onClickCountButton={(type) =>
                     onClickCountButton(item.id, item.quantity, type)
                   }
+                  onClickRemove={() => deletedCartItem(item.id)}
                 />
               ))
             ) : (
