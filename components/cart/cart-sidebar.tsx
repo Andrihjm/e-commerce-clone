@@ -60,13 +60,18 @@ const CartSidebar = ({ children }: CartSidebarProps) => {
     <>
       <Sheet>
         <SheetTrigger>{children}</SheetTrigger>
-        <SheetContent className="flex flex-col justify-between pb-0 bg-[#dfdcdb] text-black">
-          <SheetHeader>
-            <SheetTitle>{items.length} sure?</SheetTitle>
-            <SheetDescription></SheetDescription>
-          </SheetHeader>
+        <SheetContent className="flex flex-col justify-between pb-0 bg-[#f5f3f3] text-black">
+          {totalAmount > 0 && (
+            <SheetHeader>
+              <SheetTitle>
+                Keranjangmu{" "}
+                <span className="font-bold">{items.length} MENDO</span>
+              </SheetTitle>
+              <SheetDescription></SheetDescription>
+            </SheetHeader>
+          )}
 
-          <div className="flex-1 overflow-auto scrollbar">
+          <div className="flex-1 -mx-3 overflow-auto scrollbar">
             {isLoading ? (
               <p>Loading...</p>
             ) : items.length > 0 ? (
@@ -96,8 +101,8 @@ const CartSidebar = ({ children }: CartSidebarProps) => {
           <SheetFooter className="-mx-3 py-8 px-5 bg-white">
             <div className="w-full">
               <div className="flex mb-4">
-                <div className="flex flex-1 text-lg text-neutral-500">
-                  zdfsd
+                <div className="flex flex-1 text-lg text-gray-600">
+                  Total
                   <span className="relative -top-1 mx-2 flex-1 border-b border-dashed border-primary" />
                 </div>
 
@@ -106,7 +111,7 @@ const CartSidebar = ({ children }: CartSidebarProps) => {
 
               <Link href={"/cart"}>
                 <Button type="submit" className="w-full h-1/2 text-base">
-                  asd
+                  Lakukan pemesanan
                   <ArrowRight size={20} className="ml-2" />
                 </Button>
               </Link>

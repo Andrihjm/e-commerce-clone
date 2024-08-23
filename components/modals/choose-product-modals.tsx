@@ -12,6 +12,7 @@ import { ProductWithRelations } from "@/@types/prisma";
 import CoosePizzaForm from "../form/coose-pizza-form";
 import CooseProductForm from "../form/coose-products-form";
 import { useCartStore } from "@/store/cart";
+import { toast } from "sonner";
 
 interface ChooseProductModalsProps {
   product: ProductWithRelations;
@@ -24,17 +25,22 @@ const ChooseProductModals = ({ product }: ChooseProductModalsProps) => {
   const isPizzaForm = Boolean(firstItems?.pizzaType);
   const addCartItems = useCartStore((state) => state.addCartItems);
 
-  const onAddProductToCart = () => {
-    addCartItems({
-      productItemId: firstItems.id,
-    });
-  };
+  const handleAddToCart = async (
+    productItemId?: number,
+    ingredients?: number[]
+  ) => {
+    try {
+      const itemsId = productItemId ?? firstItems.id;
 
-  const onAddPizzaToCart = (productItemId: number, ingredients: number[]) => {
-    addCartItems({
-      productItemId,
-      ingredients,
-    });
+      await addCartItems({
+        productItemId: itemsId,
+        ingredients,
+      });
+      toast.success(`${product.name} berhasil di tambahkan ke keranjang`);
+    } catch (error) {
+      console.error(error);
+      toast.error("Product gagal di tambahkan ke keranjang");
+    }
   };
 
   return (
@@ -53,7 +59,7 @@ const ChooseProductModals = ({ product }: ChooseProductModalsProps) => {
             imageUrl={product.imageUrl}
             ingredients={product.ingredients}
             items={product.productItem}
-            onClickAddCart={onAddPizzaToCart}
+            onClickAddCart={handleAddToCart}
           />
         ) : (
           <CooseProductForm
@@ -61,7 +67,7 @@ const ChooseProductModals = ({ product }: ChooseProductModalsProps) => {
             description={product.description}
             price={product.price}
             imageUrl={product.imageUrl}
-            onClickAddCart={onAddProductToCart}
+            onClickAddCart={handleAddToCart}
           />
         )}
       </DialogContent>

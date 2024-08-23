@@ -22,6 +22,7 @@ interface ChoosePizzaFormProps {
   imageUrl: string;
   description: string;
   price: number;
+  loading?: boolean;
   items?: ProductItem[];
   currentItemId?: number;
   onClickAddCart: (itemId: number, ingredient: number[]) => void;
@@ -33,12 +34,14 @@ const ChoosePizzaForm = ({
   imageUrl,
   description,
   price,
+  loading,
   items,
   onClickAddCart,
   ingredients,
 }: ChoosePizzaFormProps) => {
   const [size, setSize] = useState<PizzaSizes>(20);
   const [type, setType] = useState<PizzaTypes>(1);
+  const [isAddToCart, setIsAddToCart] = useState(false);
 
   const [selectedIngredients, { toggle: addIngredient }] = useSet(
     new Set<number>([])
@@ -76,28 +79,17 @@ const ChoosePizzaForm = ({
     }
   }, [availablePizzasSizes, type, size]);
 
-  const handleOnClickAddToCart = () => {
+  const handleOnClickAddToCart = async () => {
     if (currentItemId) {
-      onClickAddCart(currentItemId, Array.from(selectedIngredients));
+      setIsAddToCart(true);
+      await onClickAddCart(currentItemId, Array.from(selectedIngredients));
+      setIsAddToCart(false);
     } else {
       alert(
         "Pilihan pizza tidak tersedia untuk ukuran dan tipe ini. Silakan pilih kombinasi lain."
       );
     }
   };
-
-  // console.log("Items:", items);
-  // console.log("Selected size:", size);
-  // console.log("Selected type:", type);
-
-  // console.log("Current Item ID:", currentItemId);
-
-  // console.log("Items:", items);
-  // items.forEach((item) => {
-  //   console.log(
-  //     `Item ID: ${item.id}, Pizza Type: ${item.pizzaType}, Size: ${item.size}`
-  //   );
-  // });
 
   return (
     <div className="flex flex-1">
@@ -140,10 +132,13 @@ const ChoosePizzaForm = ({
         </div>
 
         <Button
+          disabled={loading || isAddToCart}
           onClick={handleOnClickAddToCart}
           className="h-[55px] w-full px-10 mt-10 text-base rounded-md"
         >
-          Total belanja Anda Rp.{totalPrice.toLocaleString()}.-
+          {isAddToCart
+            ? "Menambahkan ke Keranjang..."
+            : `Total belanja Anda Rp.${totalPrice.toLocaleString()}.-`}
         </Button>
       </div>
     </div>
