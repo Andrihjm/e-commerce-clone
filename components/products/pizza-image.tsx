@@ -5,7 +5,7 @@ import React from "react";
 interface PizzaImageProps {
   className?: string;
   imageUrl: string;
-  size: 300 | 370 | 450;
+  size: 20 | 30 | 40;
 }
 
 const PizzaImage = ({ className, imageUrl, size }: PizzaImageProps) => {
@@ -26,9 +26,9 @@ const PizzaImage = ({ className, imageUrl, size }: PizzaImageProps) => {
         className={cn(
           "h-full w-full object-cover rounded-full transition-all duration-300 z-10",
           {
-            "w-[300px] h-[300px]": size === 300,
-            "w-[370px] h-[370px]": size === 370,
-            "w-[450px] h-[450px]": size === 450,
+            "w-[300px] h-[300px]": size === 30,
+            "w-[370px] h-[370px]": size === 30,
+            "w-[450px] h-[450px]": size === 40,
           }
         )}
       />

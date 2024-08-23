@@ -37,18 +37,23 @@ const ChoosePizzaForm = ({
   onClickAddCart,
   ingredients,
 }: ChoosePizzaFormProps) => {
-  const [size, setSize] = useState<PizzaSizes>(300);
+  const [size, setSize] = useState<PizzaSizes>(20);
   const [type, setType] = useState<PizzaTypes>(1);
 
-  const [selectedIngredients, { toggle: addIngredient }] = useSet<number>(
-    new Set([])
+  const [selectedIngredients, { toggle: addIngredient }] = useSet(
+    new Set<number>([])
   );
 
   const currentItemId = items?.find(
     (item) => item.pizzaType === type && item.size === size
   )?.id;
 
-  const textDetails = `${size} cm, ${mapPizzaType[type]}`;
+  const selectedIngredientsNames = Array.from(selectedIngredients)
+    .map((id) => ingredients.find((ingredient) => ingredient.id === id)?.name)
+    .filter((name) => name)
+    .join(", ");
+
+  const textDetails = `${size} cm, ${selectedIngredientsNames} ,${mapPizzaType[type]}`;
 
   const totalPrice = calcTotalPizzaPrice(
     type,
@@ -74,8 +79,25 @@ const ChoosePizzaForm = ({
   const handleOnClickAddToCart = () => {
     if (currentItemId) {
       onClickAddCart(currentItemId, Array.from(selectedIngredients));
+    } else {
+      alert(
+        "Pilihan pizza tidak tersedia untuk ukuran dan tipe ini. Silakan pilih kombinasi lain."
+      );
     }
   };
+
+  // console.log("Items:", items);
+  // console.log("Selected size:", size);
+  // console.log("Selected type:", type);
+
+  // console.log("Current Item ID:", currentItemId);
+
+  // console.log("Items:", items);
+  // items.forEach((item) => {
+  //   console.log(
+  //     `Item ID: ${item.id}, Pizza Type: ${item.pizzaType}, Size: ${item.size}`
+  //   );
+  // });
 
   return (
     <div className="flex flex-1">
@@ -121,7 +143,7 @@ const ChoosePizzaForm = ({
           onClick={handleOnClickAddToCart}
           className="h-[55px] w-full px-10 mt-10 text-base rounded-md"
         >
-          Total belanja Anda Rp.{price.toLocaleString()}.-
+          Total belanja Anda Rp.{totalPrice.toLocaleString()}.-
         </Button>
       </div>
     </div>

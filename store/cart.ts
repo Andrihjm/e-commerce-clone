@@ -53,6 +53,8 @@ export const useCartStore = create<CartState>((set, get) => ({
     } catch (error) {
       console.error(error);
       set({ error: true });
+    } finally {
+      set({ loading: false });
     }
   },
 
@@ -63,6 +65,9 @@ export const useCartStore = create<CartState>((set, get) => ({
       const response = await ApiClient.cart.deleteItemsCartService(id);
       set(getCartDetails(response));
     } catch (error) {
+      console.error(error);
+      set({ error: true });
+    } finally {
       set({ loading: false });
     }
   },
@@ -74,6 +79,9 @@ export const useCartStore = create<CartState>((set, get) => ({
       const response = await ApiClient.cart.addItemCartService(values);
       set(getCartDetails(response));
     } catch (error) {
+      console.error(error);
+      set({ error: true });
+    } finally {
       set({ loading: false });
     }
   },

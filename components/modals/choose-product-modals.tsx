@@ -33,7 +33,7 @@ const ChooseProductModals = ({ product }: ChooseProductModalsProps) => {
   const onAddPizzaToCart = (productItemId: number, ingredients: number[]) => {
     addCartItems({
       productItemId,
-      ingredients: product.ingredients.map((ingredient) => ingredient.id),
+      ingredients,
     });
   };
 
@@ -52,6 +52,7 @@ const ChooseProductModals = ({ product }: ChooseProductModalsProps) => {
             price={product.price}
             imageUrl={product.imageUrl}
             ingredients={product.ingredients}
+            items={product.productItem}
             onClickAddCart={onAddPizzaToCart}
           />
         ) : (
