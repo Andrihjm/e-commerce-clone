@@ -1,20 +1,15 @@
 import FilterComponent from "@/components/filter/filter-component";
 import ProductsGroupList from "@/components/products/products-group-list";
 import Category from "@/components/shared/category";
-import prisma from "@/lib/db";
+import { findPizzas, GetSearchParams } from "@/lib/find-pizza";
 import { Suspense } from "react";
 
-export default async function Home() {
-  const categories = await prisma.category.findMany({
-    include: {
-      products: {
-        include: {
-          ingredients: true,
-          productItem: true,
-        },
-      },
-    },
-  });
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: GetSearchParams;
+}) {
+  const categories = await findPizzas(searchParams);
 
   return (
     <>
