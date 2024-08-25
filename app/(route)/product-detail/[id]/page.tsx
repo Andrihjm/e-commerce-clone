@@ -1,4 +1,5 @@
 import PizzaImage from "@/components/products/pizza-image";
+import ProductForm from "@/components/shared/product-form";
 import prisma from "@/lib/db";
 import React from "react";
 
@@ -33,29 +34,8 @@ const page = async ({ params }: Props) => {
   }
 
   return (
-    <div className="components flex flex-col my-10">
-      <div className="flex flex-1">
-        <PizzaImage imageUrl={productApi.imageUrl} size={40} />
-
-        <div className="w-[490px] bg-gray-500/10 p-7">
-          <h2
-            title={productApi.name}
-            className="mb-1 line-clamp-2 font-extrabold"
-          >
-            {productApi.name} Lorem ipsum dolor sit amet consectetur,
-            adipisicing elit. Optio dicta earum incidunt eum id expedita,
-            reprehenderit necessitatibus vero minima autem?
-          </h2>
-          <p
-            title={productApi.description}
-            className="line-clamp-2 text-gray-400"
-          >
-            {productApi.description} Lorem, ipsum dolor sit amet consectetur
-            adipisicing elit. Quis nisi aperiam dolores laborum? Est, adipisci
-            repellendus quidem aspernatur quam facere?
-          </p>
-        </div>
-      </div>
+    <div className="components flex flex-col my-10 rounded-2xl text-black">
+      <ProductForm product={productApi} />;
     </div>
   );
 };

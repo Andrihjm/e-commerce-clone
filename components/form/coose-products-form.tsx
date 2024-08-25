@@ -22,8 +22,8 @@ const CooseProductForm = ({
         <Image
           src={imageUrl}
           alt={name}
-          width={300}
-          height={300}
+          width={80}
+          height={80}
           className="relative left-2 top-2 w-full h-full object-cover transition-all duration-300 z-10"
         />
       </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import { ProductWithRelations } from "@/@types/prisma";
 import ChoosePizzaForm from "../form/coose-pizza-form";
 import CooseProductForm from "../form/coose-products-form";
