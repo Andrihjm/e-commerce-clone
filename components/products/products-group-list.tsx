@@ -44,6 +44,7 @@ const ProductsGroupList = ({
             description={items.description}
             price={items.price}
             imageUrl={items.imageUrl}
+            ingredients={items.ingredients}
           />
         ))}
       </div>

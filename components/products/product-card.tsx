@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
 import { formmaterCurrency } from "@/utils/formatter-currency";
+import { Ingredient } from "@prisma/client";
 
 interface ProductProps {
   id: number;
@@ -10,6 +11,7 @@ interface ProductProps {
   description: string;
   price: number;
   imageUrl: string;
+  ingredients: Ingredient[];
 }
 
 const ProductCard = ({
@@ -18,6 +20,7 @@ const ProductCard = ({
   description,
   price,
   imageUrl,
+  ingredients,
 }: ProductProps) => {
   return (
     <div className="rounded-md hover:-translate-y-4 transition-all duration-500">
@@ -38,7 +41,7 @@ const ProductCard = ({
           </h3>
 
           <p title={description} className="text-sm line-clamp-3 text-gray-300">
-            {description}
+            {ingredients.map((ingredient) => ingredient.name).join(", ")}
           </p>
 
           <div className="flex items-center justify-between mt-4">

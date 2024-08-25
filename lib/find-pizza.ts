@@ -38,7 +38,8 @@ export const findPizzas = async (params: GetSearchParams) => {
               }
             : undefined,
           productItem: {
-            some: {
+            every: {
+              // Menggunakan 'every' untuk memastikan semua productItem memenuhi kondisi harga
               size: {
                 in: sizes,
               },
@@ -46,8 +47,8 @@ export const findPizzas = async (params: GetSearchParams) => {
                 in: pizzaTypes,
               },
               price: {
-                gte: minPrice, // >=
-                lte: maxPrice, // <=
+                gte: minPrice,
+                lte: maxPrice,
               },
             },
           },

@@ -9,9 +9,22 @@ interface Props {
 }
 
 const page = async ({ params }: Props) => {
-  const productApi = await prisma.product.findUnique({
+  const productApi = await prisma.product.findFirst({
     where: {
       id: Number(params.id),
+    },
+    include: {
+      ingredients: true,
+      category: {
+        include: {
+          products: {
+            include: {
+              productItem: true,
+            },
+          },
+        },
+      },
+      productItem: true,
     },
   });
 

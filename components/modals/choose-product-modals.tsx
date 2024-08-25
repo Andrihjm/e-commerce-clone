@@ -9,10 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { ProductWithRelations } from "@/@types/prisma";
-import CoosePizzaForm from "../form/coose-pizza-form";
-import CooseProductForm from "../form/coose-products-form";
-import { useCartStore } from "@/store/cart";
-import { toast } from "sonner";
+import ProductForm from "../shared/product-form";
 
 interface ChooseProductModalsProps {
   product: ProductWithRelations;
@@ -21,28 +18,6 @@ interface ChooseProductModalsProps {
 const ChooseProductModals = ({ product }: ChooseProductModalsProps) => {
   const router = useRouter();
 
-  const firstItems = product?.productItem[0];
-  const isPizzaForm = Boolean(firstItems?.pizzaType);
-  const addCartItems = useCartStore((state) => state.addCartItems);
-
-  const handleAddToCart = async (
-    productItemId?: number,
-    ingredients?: number[]
-  ) => {
-    try {
-      const itemsId = productItemId ?? firstItems.id;
-
-      await addCartItems({
-        productItemId: itemsId,
-        ingredients,
-      });
-      toast.success(`${product.name} berhasil di tambahkan ke keranjang`);
-    } catch (error) {
-      console.error(error);
-      toast.error("Product gagal di tambahkan ke keranjang");
-    }
-  };
-
   return (
     <Dialog open={Boolean(product)} onOpenChange={() => router.back()}>
       {/* <DialogContent className="bg-white text-black"> */}
@@ -50,26 +25,9 @@ const ChooseProductModals = ({ product }: ChooseProductModalsProps) => {
         <DialogHeader>
           <DialogTitle></DialogTitle>
           <DialogDescription></DialogDescription>
+
+          <ProductForm product={product} onSubmit={() => router.back()} />
         </DialogHeader>
-        {isPizzaForm ? (
-          <CoosePizzaForm
-            name={product.name}
-            description={product.description}
-            price={product.price}
-            imageUrl={product.imageUrl}
-            ingredients={product.ingredients}
-            items={product.productItem}
-            onClickAddCart={handleAddToCart}
-          />
-        ) : (
-          <CooseProductForm
-            name={product.name}
-            description={product.description}
-            price={product.price}
-            imageUrl={product.imageUrl}
-            onClickAddCart={handleAddToCart}
-          />
-        )}
       </DialogContent>
     </Dialog>
   );

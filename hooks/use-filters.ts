@@ -1,5 +1,5 @@
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useSet } from "react-use";
 
 interface DataPriceProps {
@@ -62,14 +62,25 @@ export const useFilters = (): ReturnProps => {
     }));
   };
 
-  return {
-    selecredIngredients,
-    setSelecredIngredients: toggleIngredients,
-    price,
-    setPrice: updatePrice,
-    sizes,
-    pizzaTypes,
-    setSizes: toggleSize,
-    setPizzaTypes: tooglePizzaTypes,
-  };
+  return useMemo(
+    () => ({
+      selecredIngredients,
+      setSelecredIngredients: toggleIngredients,
+      price,
+      setPrice: updatePrice,
+      sizes,
+      pizzaTypes,
+      setSizes: toggleSize,
+      setPizzaTypes: tooglePizzaTypes,
+    }),
+    [
+      pizzaTypes,
+      price,
+      selecredIngredients,
+      sizes,
+      // toggleIngredients,
+      // toggleSize,
+      // tooglePizzaTypes,
+    ]
+  );
 };
