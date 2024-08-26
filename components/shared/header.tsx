@@ -5,9 +5,12 @@ import { User } from "lucide-react";
 import Link from "next/link";
 import SearchInput from "./search-input";
 import CartButton from "../cart/cart-button";
-import CartSidebar from "../cart/cart-sidebar";
 
-const Header = () => {
+interface HeaderProps {
+  hideSearch?: boolean;
+}
+
+const Header = ({ hideSearch }: HeaderProps) => {
   return (
     <>
       <header className="border-custom-primary">
@@ -26,9 +29,11 @@ const Header = () => {
             </div>
           </Link>
 
-          <div className="flex-1 mx-10">
-            <SearchInput />
-          </div>
+          {!hideSearch && (
+            <div className="flex-1 mx-10">
+              <SearchInput />
+            </div>
+          )}
 
           <div className="flex items-center gap-3">
             <Button variant={"outline"} className="flex items-center gap-1">
@@ -36,7 +41,7 @@ const Header = () => {
               User
             </Button>
 
-            <CartButton />
+            {!hideSearch && <CartButton />}
           </div>
         </div>
       </header>
