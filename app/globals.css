@@ -11,6 +11,12 @@
   border-image: linear-gradient(to right, #0f0f0f, #ff0000, #0f0f0f) 1;
 }
 
+.border-dashed-primary {
+  border-bottom-width: 1.5px;
+  border-image: linear-gradient(to right, #0f0f0f, #ff0000, #0f0f0f) 1;
+  border-style: dashed;
+}
+
 .border-right-primary {
   border-right-width: 1.5px;
   border-image: linear-gradient(to top, #0f0f0f, #ff0000, #0f0f0f) 1;

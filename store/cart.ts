@@ -12,14 +12,14 @@ export interface CartState {
   //   Fetch cart items
   fetchCartItems: () => Promise<void>;
 
-  //   Update items quantity
-  updateItemsQuantity: (id: number, quantity: number) => Promise<void>;
+  //   Update item quantity
+  updateItemQuantity: (id: number, quantity: number) => Promise<void>;
 
-  //   Remove items from Cart
-  deletedCartItem: (id: number) => Promise<void>;
+  //   Remove item from Cart
+  removeCartItem: (id: number) => Promise<void>;
 
-  //   Add items to Cart
-  addCartItems: (values: CreateCartItemValues) => Promise<void>;
+  //   Add item to Cart
+  addCartItem: (values: CreateCartItemValues) => Promise<void>;
 }
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -42,8 +42,8 @@ export const useCartStore = create<CartState>((set, get) => ({
     }
   },
 
-  //   Update items quantity
-  updateItemsQuantity: async (id: number, quantity: number) => {
+  //   Update item quantity
+  updateItemQuantity: async (id: number, quantity: number) => {
     try {
       const response = await ApiClient.cart.updateItemsQuantityService(
         id,
@@ -58,8 +58,8 @@ export const useCartStore = create<CartState>((set, get) => ({
     }
   },
 
-  //   Remove items from Cart
-  deletedCartItem: async (id: number) => {
+  //   Remove item from Cart
+  removeCartItem: async (id: number) => {
     try {
       set((state) => ({
         loading: true,
@@ -81,8 +81,8 @@ export const useCartStore = create<CartState>((set, get) => ({
     }
   },
 
-  //   Add items to Cart
-  addCartItems: async (values: CreateCartItemValues) => {
+  //   Add item to Cart
+  addCartItem: async (values: CreateCartItemValues) => {
     try {
       set({ loading: true, error: false });
       const response = await ApiClient.cart.addItemCartService(values);

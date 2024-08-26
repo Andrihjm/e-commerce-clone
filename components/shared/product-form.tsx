@@ -14,7 +14,7 @@ interface ProductFormProps {
 const ProductForm = ({ product, onSubmit: _onSubmit }: ProductFormProps) => {
   const firstItems = product?.productItem[0];
   const isPizzaForm = Boolean(firstItems?.pizzaType);
-  const addCartItems = useCartStore((state) => state.addCartItems);
+  const addCartItems = useCartStore((state) => state.addCartItem);
 
   const handleAddToCart = async (
     productItemId?: number,
