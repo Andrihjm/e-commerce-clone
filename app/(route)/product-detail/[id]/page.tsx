@@ -1,4 +1,3 @@
-import PizzaImage from "@/components/products/pizza-image";
 import ProductForm from "@/components/shared/product-form";
 import prisma from "@/lib/db";
 import React from "react";
