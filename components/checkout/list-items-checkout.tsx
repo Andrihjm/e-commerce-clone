@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/hooks/use-cart";
-import React from "react";
+import React, { useState } from "react";
 import CheckoutSidebar from "./checkout-sidebar";
 import CheckoutCart from "./checkout-cart";
 import CheckoutFormInput from "./checkout-form-input";
@@ -12,6 +12,8 @@ import {
   checkoutFormSchema,
   CheckoutFormValues,
 } from "@/schema/checkout-form-schema";
+import { toast } from "sonner";
+import { createOrder } from "@/_actions/order";
 
 const ListItemsCheckout = () => {
   const { totalAmount, updateItemQuantity, items, removeCartItem, loading } =
@@ -25,6 +27,7 @@ const ListItemsCheckout = () => {
     const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
     updateItemQuantity(id, newQuantity);
   };
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutFormSchema),
@@ -38,8 +41,22 @@ const ListItemsCheckout = () => {
     },
   });
 
-  const onSubmit = (data: CheckoutFormValues) => {
+  const onSubmit = async (data: CheckoutFormValues) => {
     console.log(data);
+    try {
+      setIsSubmitting(true);
+
+      await createOrder(data);
+
+      toast.success("Berhasil menambahkan pesanan", {
+        icon: "✅",
+      });
+    } catch (error) {
+      setIsSubmitting(false);
+      toast.error("Gagal menambahkan pesanan", {
+        icon: "❌",
+      });
+    }
   };
 
   return (
@@ -70,7 +87,7 @@ const ListItemsCheckout = () => {
               <div className="w-[450px]">
                 <CheckoutSidebar
                   totalAmount={totalAmount}
-                  loading={loading}
+                  loading={loading || isSubmitting}
                   className={loading ? "opacity-40 pointer-events-none" : ""}
                 />
               </div>
