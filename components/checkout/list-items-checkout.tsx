@@ -2,14 +2,16 @@
 
 import { useCart } from "@/hooks/use-cart";
 import React from "react";
-import { CheckoutItem } from "./checkout-item";
-import { PizzaSizes, PizzaTypes } from "@/constants/pizza";
-import { getCartItemDetails } from "@/lib/get-cartcitem-details";
-import WhiteBlock from "../shared/white-block";
-import { Input } from "../ui/input";
-import CheckoutItemsDetails from "./checkout-items-details";
-import { Package, Percent, Truck } from "lucide-react";
-import { Textarea } from "../ui/textarea";
+import CheckoutSidebar from "./checkout-sidebar";
+import CheckoutCart from "./checkout-cart";
+import CheckoutFormInput from "./checkout-form-input";
+import CheckotuFormAddress from "./checkotu-form-address";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+import {
+  checkoutFormSchema,
+  CheckoutFormValues,
+} from "@/schema/checkout-form-schema";
 
 const ListItemsCheckout = () => {
   const { totalAmount, updateItemQuantity, items, removeCartItem, loading } =
@@ -24,121 +26,57 @@ const ListItemsCheckout = () => {
     updateItemQuantity(id, newQuantity);
   };
 
+  const form = useForm<CheckoutFormValues>({
+    resolver: zodResolver(checkoutFormSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      address: "",
+      comment: "",
+    },
+  });
+
+  const onSubmit = (data: CheckoutFormValues) => {
+    console.log(data);
+  };
+
   return (
     <>
       <div className="components mt-5 text-black">
         <h1 className="text-white font-extrabold mb-8">Pesanan Anda</h1>
 
-        <div className="flex gap-24">
-          <div className="flex flex-col gap-10 mb-20 flex-1">
-            <WhiteBlock title="1. Kopi: ">
-              <div className="flex flex-col gap-4">
-                {/* {loading ? (
-                  <p>Loading...</p>
-                ) : } */}
-                {items.length > 0 ? (
-                  items.map((item) => (
-                    <CheckoutItem
-                      key={item.id}
-                      id={item.id}
-                      name={item.name}
-                      details={getCartItemDetails(
-                        item.ingredients,
-                        item.pizzaType as PizzaTypes,
-                        item.pizzaSize as PizzaSizes
-                      )}
-                      price={item.price}
-                      quantity={item.quantity}
-                      imageUrl={item.imageUrl}
-                      onClickCountButton={(type) =>
-                        handleUpdateQuantity(item.id, item.quantity, type)
-                      }
-                      onClickRemove={() => removeCartItem(item.id)}
-                      disabled={item.disabled}
-                    />
-                  ))
-                ) : (
-                  <p>Your cart is empty</p>
-                )}
-              </div>
-            </WhiteBlock>
+        <FormProvider {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="flex gap-24">
+              <div className="flex flex-col gap-10 mb-20 flex-1">
+                <CheckoutCart
+                  items={items}
+                  handleUpdateQuantity={handleUpdateQuantity}
+                  removeCartItem={removeCartItem}
+                  loading={loading}
+                />
 
-            <WhiteBlock title="2. Pizza">
-              <div className="grid grid-cols-2 gap-5">
-                <Input
-                  name="firstName"
-                  placeholder="first name"
-                  className="text-base"
+                <CheckoutFormInput
+                  className={loading ? "opacity-40 pointer-events-none" : ""}
                 />
-                <Input
-                  name="lastName"
-                  placeholder="last name"
-                  className="text-base"
-                />
-                <Input
-                  name="your email"
-                  placeholder="email"
-                  className="text-base"
-                />
-                <Input
-                  name="your phone"
-                  placeholder="phone"
-                  className="text-base"
+
+                <CheckotuFormAddress
+                  className={loading ? "opacity-40 pointer-events-none" : ""}
                 />
               </div>
-            </WhiteBlock>
 
-            <WhiteBlock title="3. Pesan">
-              <div className="flex flex-col gap-5">
-                <Input
-                  name="firstName"
-                  placeholder="first name..."
-                  className="text-base"
+              <div className="w-[450px]">
+                <CheckoutSidebar
+                  totalAmount={totalAmount}
+                  loading={loading}
+                  className={loading ? "opacity-40 pointer-events-none" : ""}
                 />
-                <Textarea placeholder="Type your message here." />
               </div>
-            </WhiteBlock>
-          </div>
-
-          <div className="w-[450px]">
-            <WhiteBlock>
-              <div className="flex flex-col gap-1 text-xl">
-                <span>Kopi</span>
-                <span className="my-2 text-2xl font-extrabold">
-                  ${totalAmount}
-                </span>
-              </div>
-
-              <CheckoutItemsDetails
-                title={
-                  <div className="flex items-center gap-1 text-black">
-                    <Package size={22} className="text-gray-400" />
-                    Total
-                  </div>
-                }
-                value={totalAmount}
-              />
-              <CheckoutItemsDetails
-                title={
-                  <div className="flex items-center gap-1 text-black">
-                    <Percent size={22} className="text-gray-400" />
-                    Ongkir
-                  </div>
-                }
-                value={totalAmount}
-              />
-              <CheckoutItemsDetails
-                title={
-                  <div className="flex items-center gap-1 text-black">
-                    <Truck size={22} className="text-gray-400" />
-                    Subtotal
-                  </div>
-                }
-                value={totalAmount}
-              />
-            </WhiteBlock>
-          </div>
-        </div>
+            </div>
+          </form>
+        </FormProvider>
       </div>
     </>
   );

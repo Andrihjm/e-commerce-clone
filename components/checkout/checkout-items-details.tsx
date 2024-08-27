@@ -2,7 +2,7 @@ import React from "react";
 
 interface CheckoutItemsDetailsProps {
   title: React.ReactNode;
-  value: number;
+  value: React.ReactNode;
 }
 
 const CheckoutItemsDetails = ({ title, value }: CheckoutItemsDetailsProps) => {
@@ -14,7 +14,7 @@ const CheckoutItemsDetails = ({ title, value }: CheckoutItemsDetailsProps) => {
           <div className="flex-1 border-dashed-primary relative -top-1 mx-2" />
         </span>
 
-        <span className="font-bold">${value}</span>
+        <span className="font-bold">{value}</span>
       </div>
     </div>
   );
