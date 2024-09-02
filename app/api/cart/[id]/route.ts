@@ -8,6 +8,10 @@ export async function PUT(
 ) {
   try {
     const id = Number(params.id);
+    if (isNaN(id)) {
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+    }
+
     const { quantity } = (await req.json()) as { quantity: number };
     const token = req.cookies.get("cartToken")?.value;
 
@@ -27,19 +31,15 @@ export async function PUT(
       data: { quantity },
     });
 
-    if (!updatedItem) {
-      return NextResponse.json(
-        { error: "Cart item not found" },
-        { status: 404 }
-      );
-    }
-
     const updateUserCart = await updateTotalAmountCart(token);
 
-    return NextResponse.json({
-      message: "Cart item updated successfully",
-      data: updateUserCart,
-    });
+    return NextResponse.json(
+      {
+        message: "Cart item updated successfully",
+        data: updateUserCart,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("[CART_ID_PUT] Server error", error);
     return NextResponse.json(
@@ -57,6 +57,10 @@ export async function DELETE(
 ) {
   try {
     const id = Number(params.id);
+    if (isNaN(id)) {
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+    }
+
     const token = req.cookies.get("cartToken")?.value;
 
     if (!token) {
@@ -70,19 +74,15 @@ export async function DELETE(
       where: { id },
     });
 
-    if (!deletedItem) {
-      return NextResponse.json(
-        { error: "Cart item not found" },
-        { status: 404 }
-      );
-    }
-
     const updateUserCart = await updateTotalAmountCart(token);
 
-    return NextResponse.json({
-      message: "Cart item deleted successfully",
-      data: updateUserCart,
-    });
+    return NextResponse.json(
+      {
+        message: "Cart item deleted successfully",
+        data: updateUserCart,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("[CART_DELETE] Server error", error);
     return NextResponse.json(
